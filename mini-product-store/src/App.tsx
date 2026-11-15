@@ -1,10 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import type { Product } from "./types/product";
 import "./App.css";
 import { ProductList } from "./components/ProductList";
 import { SearchBar } from "./components/SearchBar";
 import { CategoryFilter } from "./components/CategoryFilter";
 import { SortDropdown } from "./components/SortDropdown";
+import { Favorites } from "./components/Favorites";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -17,6 +18,27 @@ function App() {
   const [serachItem, setSerachItem] = useState<string>("");
   const [category, setCategory] = useState<string>("all");
   const [sortOrder, setSortOrder] = useState<string>("");
+  const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
+
+  const sortedProducts = useMemo(() => {
+    // 1. Filter
+    const filtered = products.filter((product) => {
+      const searchFilter = product.title.toLowerCase().includes(serachItem.toLowerCase().trim());
+      const categoryFilter = category === "all" || product.category === category;
+      return searchFilter && categoryFilter;
+    });
+
+    // 2. Sort
+    return [...filtered].sort((a, b) => {
+      if (sortOrder === "lowHigh") return a.price - b.price;
+      if (sortOrder === "highLow") return b.price - a.price;
+      return 0;
+    });
+  }, [products, serachItem, category, sortOrder]);
+
+  const favoriteProducts = useMemo(() => {
+    return products.filter((p) => favoriteIds.includes(p.id));
+  }, [products, favoriteIds]);
 
   useEffect(() => {
     async function loadProducts() {
@@ -53,31 +75,37 @@ function App() {
     );
   }
 
-
-
-  const filteredProducts: Product[] = products.filter((product) => {
-    // === not incl. coz of strict filtering
-    const serachFilter: boolean = product.title.toLowerCase().includes(serachItem.toLowerCase().trim()) ? true : false;
-    const categoryFilter: boolean = category === "all" ? true : category === product.category ? true : false;
-
-    return serachFilter && categoryFilter;
-  });
-
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortOrder === "lowHigh") return a.price - b.price;
-    if (sortOrder === "highLow") return b.price - a.price;
-    return 0;
-  });
+  function toggleFavorite(id: number) {
+    if (favoriteIds.includes(id)) {
+      setFavoriteIds(favoriteIds.filter((ele) => ele !== id));
+    } else {
+      setFavoriteIds([...favoriteIds, id]);
+    }
+  }
 
   return (
     <div className="appContainer">
       <h1 ref={listTopRef}>Product List</h1>
-      {/* we are making signature of setSerachItem in serachbar */}
-      <SearchBar searchItem={serachItem} inputRef={searchInputRef} onSearchChange={setSerachItem} />
-      <button onClick={() => searchInputRef.current?.focus()}>Focus</button>
-      <CategoryFilter selectedCategory={category} onButtonToggle={setCategory} />
-      <SortDropdown onDropdownSelect={setSortOrder} />
-      {sortedProducts.length === 0 ? <h3>No prdoucts...</h3> : <ProductList products={sortedProducts} />}
+
+      <div className="mainContent">
+        <div className="leftSide">
+          <SearchBar searchItem={serachItem} inputRef={searchInputRef} onSearchChange={setSerachItem} />
+          <button onClick={() => searchInputRef.current?.focus()}>Focus</button>
+          <CategoryFilter selectedCategory={category} onButtonToggle={setCategory} />
+          <SortDropdown onDropdownSelect={setSortOrder} />
+          {sortedProducts.length === 0 ? (
+            <h3>No products...</h3>
+          ) : (
+            <ProductList products={sortedProducts} favoriteIds={favoriteIds} toggleFavorite={toggleFavorite} />
+          )}
+        </div>
+
+        <div className="rightSide">
+          <Favorites favoriteProducts={favoriteProducts} />
+        </div>
+      </div>
+      {/* mainContent wrapper khatam */}
+
       <button onClick={() => listTopRef.current?.scrollIntoView({ behavior: "smooth" })}>Back to Top</button>
     </div>
   );

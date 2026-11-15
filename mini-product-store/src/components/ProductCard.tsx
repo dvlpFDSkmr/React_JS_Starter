@@ -1,24 +1,27 @@
+import React from "react";
 import type { Product } from "../types/product";
-import './component.css'
+import "./component.css";
 
 type ProductCardProps = {
   product: Product;
-  key: number;
+  isChecked?: boolean;
+  onToggle?: (id: number) => void;
 };
 
-export function ProductCard({ product }: ProductCardProps) {
-  const { title, description, price, category, thumbnail } = product;
+export const ProductCard = React.memo(function ({ product, isChecked, onToggle }: ProductCardProps) {
+  const { id, title, description, price, category, thumbnail } = product;
+  console.log(`Card rendered`, product.id);
   return (
-    <div>
-      <div className="productCard">
-        <h3>{title}</h3>
-        <img src={thumbnail} alt={title} />
-        <p>
-          <b>{category}</b>
-        </p>
-        <p className="price">Price : {price}</p>
-        <p>{description}</p>
+    <div className="productCard">
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <span>{isChecked ? "❤️" : "🤍"}</span>
+        <input type="checkbox" checked={isChecked} onChange={() => onToggle?.(id)} />
       </div>
+      <img src={thumbnail} alt={title} />
+      <h3>{title}</h3>
+      <p style={{ textTransform: "capitalize", color: "#888" }}>{category}</p>
+      <p className="price">${price}</p>
+      <p>{description}</p>
     </div>
   );
-}
+});
