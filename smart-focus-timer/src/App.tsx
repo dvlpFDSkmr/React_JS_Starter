@@ -40,10 +40,14 @@ function App() {
   }, [tasks]);
 
   return (
-    <div>
-      <h1>Sessions : {sessions}</h1>
-      <button onClick={ctx?.toggleTheme}>Change Theme</button>
-      <Timer onStop={handleStop} />
+    <div className={ctx?.theme}>
+      <button onClick={()=>ctx?.toggleTheme()}>Theme</button>
+
+      <div className="sessionTimer">
+        <h1>Sessions : {sessions}</h1>
+        <Timer onStop={handleStop} />
+      </div>
+
 
       <div className="appContainer">
         <h3>Total tasks {ctx?.tasks.length}</h3>

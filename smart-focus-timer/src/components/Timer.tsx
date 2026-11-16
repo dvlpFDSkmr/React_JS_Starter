@@ -56,11 +56,22 @@ export const Timer = React.memo(({ onStop }: TimerProps) => {
     setRunning(false);
   }
 
-  return (
-    <div className="timer">
-      <h1>{formatted}</h1>
+return (
+  <div
+    className="timer"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "12px",
+    }}
+  >
+    <h1 style={{ margin: 0 }}>{formatted}</h1>
+
+    <div style={{ display: "flex", gap: "8px" }}>
       <button onClick={handleTimer}>{running ? "Stop" : "Start"}</button>
       <button onClick={handleReset}>Reset</button>
     </div>
-  );
+  </div>
+);
 });
