@@ -32,11 +32,11 @@ function App() {
   const tasks = ctx?.tasks;
 
   const pendingCount = useMemo(() => {
-    return tasks?.filter((t) => t.isCompleted).length;
+    return tasks?.filter((t) => !t.isCompleted).length;
   }, [tasks]);
 
   const completedCount = useMemo(() => {
-    return tasks?.filter((t) => !t.isCompleted).length;
+    return tasks?.filter((t) => t.isCompleted).length;
   }, [tasks]);
 
   return (
@@ -46,7 +46,7 @@ function App() {
       <Timer onStop={handleStop} />
 
       <div className="appContainer">
-        <h3>Total tasks {ctx?.tasks.length && "No Right now"}</h3>
+        <h3>Total tasks {ctx?.tasks.length}</h3>
         <h5>Pending Tasks : {pendingCount}</h5>
         <h5>Completed Tasks : {completedCount}</h5>
         <input type="text" value={input} onChange={handleInputChange} ref={serachInputRef} />
