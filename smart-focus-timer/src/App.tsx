@@ -1,6 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { ThemeContext } from "./AppContextValue";
 import "./App.css";
+import { Timer } from "./components/Timer";
 
 function App() {
   const serachInputRef  = useRef<HTMLInputElement>(null);
@@ -26,6 +27,7 @@ function App() {
   return (
     <div>
       <button onClick={ctx?.toggleTheme}>Change Theme</button>
+      <Timer/>
       <div className="appContainer">
         <input type="text" value={input} onChange={handleInputChange} ref={serachInputRef } />
         <button onClick={handleButton}>Add item</button>
