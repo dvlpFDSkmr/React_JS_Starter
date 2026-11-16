@@ -1,9 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-export function Timer() {
-  const timerRef = useRef<number | null>(null);
+type TimerProps = {
+  onStop: () => void;
+};
+
+export const Timer = React.memo(({ onStop }: TimerProps) => {
   const [seconds, setSeconds] = useState<number>(0);
   const [running, setRunning] = useState<boolean>(false);
+  const timerRef = useRef<number | null>(null);
+
+  console.log("Timer rendered");
 
   function handleTimer() {
     if (!running) {
@@ -12,6 +18,7 @@ export function Timer() {
       }, 1000);
     } else {
       if (timerRef.current !== null) {
+        onStop();
         clearInterval(timerRef.current);
         timerRef.current = null;
       }
@@ -45,4 +52,4 @@ export function Timer() {
       <button onClick={handleReset}>Reset</button>
     </div>
   );
-}
+});
