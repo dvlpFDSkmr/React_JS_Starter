@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect, useCallback } from "react";
+import React, { useContext, useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { ThemeContext } from "./AppContextValue";
 import "./App.css";
 import { Timer } from "./components/Timer";
@@ -29,6 +29,16 @@ function App() {
     setSessions((s) => s + 1);
   }, []);
 
+  const tasks = ctx?.tasks;
+
+  const pendingCount = useMemo(() => {
+    return tasks?.filter((t) => t.isCompleted).length;
+  }, [tasks]);
+
+  const completedCount = useMemo(() => {
+    return tasks?.filter((t) => !t.isCompleted).length;
+  }, [tasks]);
+
   return (
     <div>
       <h1>Sessions : {sessions}</h1>
@@ -36,6 +46,9 @@ function App() {
       <Timer onStop={handleStop} />
 
       <div className="appContainer">
+        <h3>Total tasks {ctx?.tasks.length && "No Right now"}</h3>
+        <h5>Pending Tasks : {pendingCount}</h5>
+        <h5>Completed Tasks : {completedCount}</h5>
         <input type="text" value={input} onChange={handleInputChange} ref={serachInputRef} />
         <button onClick={handleButton}>Add item</button>
         {ctx?.tasks.map((task) => (
