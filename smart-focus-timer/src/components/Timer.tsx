@@ -1,26 +1,43 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Timer() {
+  const timerRef = useRef<number | null>(null);
   const [seconds, setSeconds] = useState<number>(0);
-  const [running, setRunning] = useState(false);
+  const [running, setRunning] = useState<boolean>(false);
 
   function handleTimer() {
+    if (!running) {
+      timerRef.current = setInterval(() => {
+        setSeconds((sec) => sec + 1);
+      }, 1000);
+    } else {
+      if (timerRef.current !== null) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    }
     setRunning((prev) => !prev);
   }
 
+  useEffect(() => {
+    // cleanup function
+    return () => {
+      if (timerRef.current !== null) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, []);
+
   function handleReset() {
+    if (timerRef.current !== null) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     setSeconds(0);
     setRunning(false);
   }
 
-  useEffect(() => {
-    if (!running) return;
-    const id = setInterval(() => {
-      setSeconds((seconds) => seconds + 1);
-    }, 1000);
-
-    return () => clearInterval(id);
-  }, [running]);
   return (
     <div className="timer">
       <h1>{seconds} seconds</h1>
