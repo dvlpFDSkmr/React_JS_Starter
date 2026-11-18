@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "./product.css";
+import ProductCard from "./ProductCard";
 
 export interface Product {
   id: number;
@@ -49,6 +50,17 @@ export function ProductExplorer() {
     });
   }, [products, serachItem, category, sortProd, ratinngSort]);
 
+  const handleCart = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const id = Number(e.currentTarget.value);
+      if (cartItemIds.includes(id)) {
+        return;
+      }
+      setCartItemIds((prev) => [...prev, id]);
+    },
+    [cartItemIds],
+  );
+
   useEffect(() => {
     async function getProductsData() {
       setLoading(true);
@@ -83,14 +95,6 @@ export function ProductExplorer() {
         <button onClick={() => setRetry((s) => s + 1)}>Retry : {retry}</button>
       </div>
     );
-  }
-
-  function handleCart(e: React.MouseEvent<HTMLButtonElement>) {
-    const id = Number(e.currentTarget.value);
-    if (cartItemIds.includes(id)) {
-      return;
-    }
-    setCartItemIds((prev) => [...prev, id]);
   }
 
   return (
@@ -128,35 +132,7 @@ export function ProductExplorer() {
 
         <h1>Cart : {cartItemIds.length}</h1>
       </div>
-      <div className="productExplorer">
-        {filteredProducts.map((product) => {
-          const isInCart = cartItemIds.includes(product.id);
-
-          return (
-            <div className="productcard" key={product.id}>
-              <img src={product.thumbnail} alt={product.title} />
-              <h4>{product.title}</h4>
-              <p>{product.brand}</p>
-              <p>
-                <b>{product.category}</b>
-              </p>
-              <p>
-                <i>{product.price}$</i>
-              </p>
-              <p>{product.description}</p>
-              <p>{product.rating} stars</p>
-              
-              <button
-                value={product.id}
-                onClick={handleCart}
-                disabled={isInCart}
-                style={isInCart ? { backgroundColor: "green" } : { backgroundColor: "blue" }}>
-                {isInCart ? "Added ✓" : "Add to Cart"}
-              </button>
-            </div>
-          );
-        })}
-      </div>
+      <ProductCard products={filteredProducts} cartItemIds={cartItemIds} handleCart={handleCart} />
     </div>
   );
 }
