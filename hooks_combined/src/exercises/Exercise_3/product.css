@@ -1,0 +1,86 @@
+.productPage {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.productPage > h1,
+.productPage > h4 {
+  text-align: center;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.filters input,
+.filters select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.filters input {
+  width: 200px;
+}
+
+.filters button {
+  padding: 8px 16px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.filters h1 {
+  margin: 0 0 0 10px;
+  font-size: 20px;
+}
+
+.productExplorer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.productcard {
+  width: 220px;
+  padding: 15px;
+  box-sizing: border-box;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.productcard img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  background-color: #eee;
+}
+
+.productcard h4 {
+  margin: 10px 0 5px;
+}
+
+.productcard p {
+  margin: 6px 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.productcard button {
+  padding: 8px 16px;
+  margin-top: 8px;
+  color: white;
+  background-color: #333;
+  border: none;
+  border-radius: 4px;
+}
