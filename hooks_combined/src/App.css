@@ -168,6 +168,71 @@ input[type="text"] {
   }
 }
 
+.userDir {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.userDir h1 {
+  text-align: center;
+}
+
+.header {
+  text-align: center;
+}
+
+.inputSection {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.inputSection input {
+  width: 150px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.inputSection button {
+  padding: 8px 16px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.userList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.userCard {
+  width: 200px;
+  padding: 15px;
+  box-sizing: border-box;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.userCard img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #eee;
+}
+
+.userCard p {
+  margin: 6px 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
 #spacer {
   height: 88px;
   border-top: 1px solid var(--border);
